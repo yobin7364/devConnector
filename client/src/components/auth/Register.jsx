@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
-const axios = require('axios');
-var classnames = require('classnames');
+import {connect} from 'react-redux';
+import {registerUser} from '../../actions/authAction';
+import axios from 'axios';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
-export default class Register extends Component {
+
+class Register extends Component {
     constructor(){
         super();
         this.state = {
@@ -22,7 +26,7 @@ export default class Register extends Component {
     }
 
     onSubmit(e){
-        //prevents form to send data to server
+        //prevents form to send data to server, which means the page will be redirected to other page
         e.preventDefault();
         
         const newUser = {
@@ -32,18 +36,25 @@ export default class Register extends Component {
             password2:this.state.password2,
         }
 
-        //client side http request base on promise and http://localhost:5000 is prefiex as proxy in package.json
-        axios.post('/api/users/register',newUser)
-            .then(res => console.log(res.data))
-            //recive error in object using 'err.response.data'
-            .catch(err => this.setState({errors: err.response.data}));
+        //'registerUser' is action and accesed using props in component
+        this.props.registerUser(newUser);
+
+
+        // //client side http request base on promise and http://localhost:5000 is prefiex as proxy in package.json
+        // axios.post('/api/users/register',newUser)
+        //     .then(res => console.log(res.data))
+        //     //recive error in object using 'err.response.data'
+        //     .catch(err => this.setState({errors: err.response.data}));
     }
 
     render() {
         const {errors} = this.state;
 
+        const { user } = this.props.auth;
+
         return (
             <div className="register">
+                {user ? user.name : null}
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
@@ -108,3 +119,16 @@ export default class Register extends Component {
         )
     }
 }
+
+//propTypes checks props of component
+Register.propTypes = {
+    registerUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
+};
+
+//to access state of store using this.props.auth, here "auth:" can be any name , "state" comes from rootReducer state.auth so same name should be used
+const mapStateToProps = (state) => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps,{registerUser})(Register);
