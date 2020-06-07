@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux';
 import {registerUser} from '../../actions/authAction';
-import axios from 'axios';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-
+import { withRouter } from 'react-router-dom';
 
 class Register extends Component {
     constructor(){
@@ -18,6 +17,19 @@ class Register extends Component {
         };
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        if(this.props.auth.isAuthenticated){
+          this.props.history.push('/dashboard');
+        }
+      }
+
+    //this props is from redux i.e 'mapStateToProps'
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.errors) {
+            this.setState({errors: nextProps.errors});
+        }
     }
 
     onChange(e) {
@@ -36,25 +48,16 @@ class Register extends Component {
             password2:this.state.password2,
         }
 
-        //'registerUser' is action and accesed using props in component
-        this.props.registerUser(newUser);
+        //'registerUser' is action and accesed using props in component, pass history also which is made avail by 'withRouter'
+        this.props.registerUser(newUser, this.props.history);
 
-
-        // //client side http request base on promise and http://localhost:5000 is prefiex as proxy in package.json
-        // axios.post('/api/users/register',newUser)
-        //     .then(res => console.log(res.data))
-        //     //recive error in object using 'err.response.data'
-        //     .catch(err => this.setState({errors: err.response.data}));
     }
 
     render() {
         const {errors} = this.state;
 
-        const { user } = this.props.auth;
-
         return (
             <div className="register">
-                {user ? user.name : null}
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
@@ -120,15 +123,18 @@ class Register extends Component {
     }
 }
 
-//propTypes checks props of component
+//propTypes checks props received from redux 
 Register.propTypes = {
     registerUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
 };
 
 //to access state of store using this.props.auth, here "auth:" can be any name , "state" comes from rootReducer state.auth so same name should be used
 const mapStateToProps = (state) => ({
-    auth: state.auth
+    auth: state.auth,
+    errors: state.errors
 });
 
-export default connect(mapStateToProps,{registerUser})(Register);
+//wrap 'Register' component with 'withRouter'
+export default connect(mapStateToProps,{registerUser})(withRouter(Register));
