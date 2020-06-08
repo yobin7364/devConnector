@@ -1,17 +1,21 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './store';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
 import {setCurrentUser, logoutUser} from './actions/authAction';
+import {clearCurrentProfile} from './actions/profileAction';
+import PrivateRoute from './components/common/PrivateRoute';
 
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Dashboard from './components/dashboard/Dashboard';
+import CreateProfile from './components/create-profile/CreateProfile';
 
 // check for token to avoid loss of state when logged in and reloaded , also this logic is runned for every request to check user is logged in or not
 if(localStorage.jwtToken) {
@@ -29,7 +33,7 @@ if(localStorage.jwtToken) {
     //logout user
     store.dispatch(logoutUser());
     //TODO: clear current profile
-    
+    store.dispatch(clearCurrentProfile());
     //redirect to login
     window.location.href = '/login';
   }
@@ -47,6 +51,15 @@ function App() {
             <div className="container">
               <Route exact path="/register" component={Register}/>
               <Route exact path="/login" component={Login}/>
+              {/* switch component is for redirecting in privateroute */}
+              <Switch>
+                <PrivateRoute exact path="/dashboard" component={Dashboard}/>
+              </Switch>
+
+              <Switch>
+                <PrivateRoute exact path="/create-profile" component={CreateProfile}/>
+              </Switch>
+
             </div>
             <Footer/>
           </div>

@@ -3,11 +3,13 @@ import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {logoutUser} from '../../actions/authAction';
+import {clearCurrentProfile} from '../../actions/profileAction';
 
 class Navbar extends Component {
     onLogoutClick(e){
         e.preventDefault();
         this.props.logoutUser();
+        this.props.clearCurrentProfile();
     }
 
     render() {
@@ -17,7 +19,7 @@ class Navbar extends Component {
         <ul className="navbar-nav ml-auto">
             <li className="nav-item">
                 {/* link tag is used for react router */}
-                <a href="" 
+                <a href="/#" 
                     onClick ={this.onLogoutClick.bind(this)}  
                     className="nav-link">
                         <img 
@@ -81,4 +83,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps,{logoutUser})(Navbar);
+export default connect(mapStateToProps,{logoutUser,clearCurrentProfile})(Navbar);
