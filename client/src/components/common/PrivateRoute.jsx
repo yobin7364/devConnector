@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Route,Redirect} from 'react-router-dom';
 
-//check it in google for info
+//check it in google for info, this is responsible for redirection on logout also
 const PrivateRoute = ({component: Component, auth, ...rest}) => (
     <Route 
     {...rest}
