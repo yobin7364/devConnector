@@ -1,7 +1,6 @@
 import React from 'react'
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { text } from 'body-parser';
 
 //this component is for a input field that can be used by any component
 const InputGroup = ({

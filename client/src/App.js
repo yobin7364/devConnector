@@ -16,6 +16,7 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import CreateProfile from './components/create-profile/CreateProfile';
+import EditProfile from './components/edit-profile/EditProfile';
 
 // check for token to avoid loss of state when logged in and reloaded , also this logic is runned for every request to check user is logged in or not
 if(localStorage.jwtToken) {
@@ -32,7 +33,7 @@ if(localStorage.jwtToken) {
   if (decoded.exp < currentTime){
     //logout user
     store.dispatch(logoutUser());
-    //TODO: clear current profile
+    //clear current profile
     store.dispatch(clearCurrentProfile());
     //redirect to login
     window.location.href = '/login';
@@ -58,6 +59,10 @@ function App() {
 
               <Switch>
                 <PrivateRoute exact path="/create-profile" component={CreateProfile}/>
+              </Switch>
+
+              <Switch>
+                <PrivateRoute exact path="/edit-profile" component={EditProfile}/>
               </Switch>
 
             </div>

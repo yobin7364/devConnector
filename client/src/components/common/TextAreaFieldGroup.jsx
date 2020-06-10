@@ -24,7 +24,7 @@ const TextAreaFieldGroup = ({
                 onChange={onChange}
                 />
                 {/* this is to place information under input fied if any */}
-                {info && <small className="form-text text-muted"></small>}
+                {info && <small className="form-text text-muted">{info}</small>}
                 {error && (<div className="invalid-feedback">{error}</div>)}
         </div>
     )

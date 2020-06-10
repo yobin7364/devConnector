@@ -3,7 +3,7 @@ import setAuthToken from '../utils/setAuthToken';
 import { GET_ERRORS,SET_CURRENT_USER } from './types';
 import jwt_decode from 'jwt-decode';
 
-//Register User
+//Register User, here only redirection occurs on register so 'history' is sent as an arg
 export const registerUser = (userData, history) => dispatch => {
         //client side http request base on promise and http://localhost:5000 is prefiex as proxy in package.json
         axios.post('/api/users/register',userData)
@@ -19,7 +19,7 @@ export const registerUser = (userData, history) => dispatch => {
 };
 
 
-//Login - Get User Token
+//Login - Get User Token, here dispatch occurs and then redirection
 export const loginUser = userData => dispatch =>{
     axios.post('/api/users/login', userData)
         .then(res => {

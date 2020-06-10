@@ -5,6 +5,7 @@ import {loginUser} from '../../actions/authAction';
 import TextFieldGroup from '../common/TextFieldGroup';
 
 class Login extends Component {
+  //this is initialization of states
     constructor(){
         super();
         this.state = {
@@ -16,14 +17,16 @@ class Login extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    //when this login componenet is mounted V DOM it is redirected to '/dashboard' if user is already logged in as this component is for guest
+    //when this login component is mounted in DOM it is redirected to '/dashboard' if user is already logged in as this component is for guest
     componentDidMount() {
       if(this.props.auth.isAuthenticated){
         this.props.history.push('/dashboard');
       }
     }
 
+    //caled when this component receives new props from parent
     componentWillReceiveProps(nextProps){
+      //redirected to dashboard when 'isAuthenticated' is true
       if(nextProps.auth.isAuthenticated){
         this.props.history.push('/dashboard');
       }

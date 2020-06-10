@@ -70,6 +70,7 @@ class Register extends Component {
                             type="text"
                             value={this.state.name}
                             onChange={this.onChange}
+                            //this is filled from 'componentWillReceiveProps()'
                             error={errors.name}
                         />
 
@@ -124,5 +125,5 @@ const mapStateToProps = (state) => ({
     errors: state.errors
 });
 
-//wrap 'Register' component with 'withRouter'
+//wrap 'Register' component with 'withRouter' when 'this.props.history' is sent to an action for redirection
 export default connect(mapStateToProps,{registerUser})(withRouter(Register));
