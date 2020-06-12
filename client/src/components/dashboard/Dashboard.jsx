@@ -5,6 +5,8 @@ import {getCurrentProfile, deleteAccount} from '../../actions/profileAction';
 import Spinner from '../common/spinner';
 import { Link } from 'react-router-dom';
 import ProfileActions from './ProfileActions';
+import Experience from './Experience';
+import Education from './Education';
 
 class Dashboard extends Component {
     //called after render() which means 'loading' is set to false and then render() is called 
@@ -25,6 +27,7 @@ class Dashboard extends Component {
         if(profile === null || loading){
             dashboardContent = <Spinner/>
         }
+        //only after profile is having some value i.e not null then else is executed
         else{
             //check if logged in user has profile data
             if(Object.keys(profile).length > 0){
@@ -38,7 +41,8 @@ class Dashboard extends Component {
                     </p>
                     {/* this componenet contains only buttons so create functional component */}
                     <ProfileActions/>
-                    {/* TODO: exp and edu */}
+                    <Experience experience={profile.experience}/>
+                    <Education education={profile.education}/>
                     <div style={{ marginBottom: '60px' }}></div>
                     <button onClick={this.onDeleteClick.bind(this)} className="btn btn-danger">
                         Delete My Account

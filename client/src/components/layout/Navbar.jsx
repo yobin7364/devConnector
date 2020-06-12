@@ -21,7 +21,7 @@ class Navbar extends Component {
                     <Link className="nav-link" to="/dashboard">Dashboard</Link>
             </li>
             <li className="nav-item">
-                {/* link tag is used for react router */}
+                {/* link tag is used for react router and only a component is reloaded else whole page is reloaded*/}
                 <a href="/#" 
                     onClick ={this.onLogoutClick.bind(this)}  
                     className="nav-link">

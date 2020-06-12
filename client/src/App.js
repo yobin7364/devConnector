@@ -17,6 +17,9 @@ import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import CreateProfile from './components/create-profile/CreateProfile';
 import EditProfile from './components/edit-profile/EditProfile';
+import AddExperience from './components/add-credentials/AddExperience';
+import AddEducation from './components/add-credentials/AddEducation';
+
 
 // check for token to avoid loss of state when logged in and reloaded , also this logic is runned for every request to check user is logged in or not
 if(localStorage.jwtToken) {
@@ -53,6 +56,7 @@ function App() {
               <Route exact path="/register" component={Register}/>
               <Route exact path="/login" component={Login}/>
               {/* switch component is for redirecting in privateroute */}
+              
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={Dashboard}/>
               </Switch>
@@ -63,6 +67,14 @@ function App() {
 
               <Switch>
                 <PrivateRoute exact path="/edit-profile" component={EditProfile}/>
+              </Switch>
+
+              <Switch>
+                <PrivateRoute exact path="/add-experience" component={AddExperience}/>
+              </Switch>
+
+              <Switch>
+                <PrivateRoute exact path="/add-education" component={AddEducation}/>
               </Switch>
 
             </div>
