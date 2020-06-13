@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import {GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRORS, SET_CURRENT_USER} from './types';
+import {GET_PROFILE,PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRORS, SET_CURRENT_USER, GET_PROFILES} from './types';
 
 //get current profile
 export const getCurrentProfile = () => dispatch => {
-    //for loading sign
+    //for loading sign and the load value of this disptach will be changed when axios dispatch occurs
     dispatch(setProfileLoading());
     axios.get('/api/profile')
         .then(res => 
@@ -21,6 +21,26 @@ export const getCurrentProfile = () => dispatch => {
             })
             );
 }
+
+
+//get profile by handle
+export const getProfileByHandle = (handle) => dispatch => {
+    dispatch(setProfileLoading());
+    axios.get(`/api/profile/handle/${handle}`)
+        .then(res => 
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            })
+            )
+        .catch(err => 
+            dispatch({
+                type: GET_PROFILE,
+                payload: null
+            })
+            );
+}
+
 
 //create profile
 export const createProfile = (profileData, history) => dispatch => {
@@ -92,6 +112,26 @@ export const deleteEducation = (id) => dispatch => {
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data
+            })
+            );
+}
+
+//Get all profiles
+export const getProfiles = () => dispatch => {
+    dispatch(setProfileLoading());
+    axios
+        .get('/api/profile/all')
+        .then(res => 
+            dispatch({
+                type: GET_PROFILES,
+                payload: res.data
+            })
+            )
+        .catch(err => 
+            //we dont want any errors we want to display empty profile
+            dispatch({
+                type: GET_PROFILES,
+                payload: null
             })
             );
 }

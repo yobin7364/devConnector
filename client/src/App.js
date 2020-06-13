@@ -19,6 +19,9 @@ import CreateProfile from './components/create-profile/CreateProfile';
 import EditProfile from './components/edit-profile/EditProfile';
 import AddExperience from './components/add-credentials/AddExperience';
 import AddEducation from './components/add-credentials/AddEducation';
+import Profiles from './components/profiles/Profiles';
+import Profile from './components/profile/Profile';
+
 
 
 // check for token to avoid loss of state when logged in and reloaded , also this logic is runned for every request to check user is logged in or not
@@ -55,6 +58,8 @@ function App() {
             <div className="container">
               <Route exact path="/register" component={Register}/>
               <Route exact path="/login" component={Login}/>
+              <Route exact path="/profiles" component={Profiles}/>
+              <Route exact path="/profile/:handle" component={Profile}/>
               {/* switch component is for redirecting in privateroute */}
               
               <Switch>
