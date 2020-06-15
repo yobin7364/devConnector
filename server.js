@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const path = require('path');
 
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
@@ -34,6 +35,18 @@ require('./config/passport')(passport);
 app.use('/api/users',users);
 app.use('/api/profile',profile);
 app.use('/api/posts',posts);
+
+//if non of above routes are called use this if condition
+//serve static assests if in production
+if(process.env.NODE_ENV === 'production'){
+        //set static folder, 'build' folder contains our static assests
+        app.use(express.static('client/build'));
+
+        //serve any routes except above API routes to send our index.html file
+        app.get('*',(req,res) => {
+                res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+        });
+}
 
 const port  = process.env.port || 5000;
 
