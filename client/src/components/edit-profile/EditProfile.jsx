@@ -221,15 +221,6 @@ class CreateProfile extends Component {
                                  />
 
                                 <TextFieldGroup
-                                 placeholder="Company"
-                                 name="company"
-                                 value={this.state.company}
-                                 onChange={this.onChange}
-                                 error={errors.company}
-                                 info="Could be your own company or one you work for"
-                                 />
-
-                                <TextFieldGroup
                                  placeholder="* Skills"
                                  name="skills"
                                  value={this.state.skills}
