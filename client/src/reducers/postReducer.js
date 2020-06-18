@@ -1,9 +1,10 @@
-import {ADD_POST, GET_POST, GET_POSTS, POST_LOADING, DELETE_POST} from '../actions/types';
+import {ADD_POST, GET_POST, GET_POSTS, POST_LOADING, DELETE_POST, FROM_POST, REVERT_POST} from '../actions/types';
 
 const initialState = {
     posts: [],
     post: {},
-    loading: false
+    loading: false,
+    fromPost: false
 };
 
 export default function(state = initialState, action) {
@@ -37,6 +38,16 @@ export default function(state = initialState, action) {
                 //action.payload contains id of post to be deleted sent from ProfileItem.jsx
                 posts: state.posts.filter(post => post._id !== action.payload)
             };
+        case FROM_POST:
+            return{
+                ...state,
+                fromPost: true
+            }
+        case REVERT_POST:
+            return{
+                ...state,
+                fromPost: false
+            }
         default:
             return state;
     }

@@ -7,6 +7,7 @@ import ProfileAbout from './ProfileAbout';
 import ProfileCreds from './ProfileCreds';
 import Spinner from '../common/Spinner';
 import {getProfileByHandle} from '../../actions/profileAction';
+import {postRevert} from '../../actions/postAction';
 
 class Profile extends Component {
 
@@ -27,9 +28,14 @@ class Profile extends Component {
         }
     }
 
+    feedRevertBack(){
+        this.props.postRevert();
+    }
+
     render() {
 
         const {profile, loading} = this.props.profile;
+        const {fromPost} = this.props.post;
         let profileContent;
 
         if(profile === null || loading){
@@ -41,9 +47,14 @@ class Profile extends Component {
                 <div>
                     <div className="row">
                         <div className="col-md-6">
-                            <Link to="/profiles" className="btn btn-light mb-3 float-left">
+                            {fromPost ? 
+                            (<Link to="/feed" className="btn btn-light mb-3 float-left" onClick={this.feedRevertBack.bind(this)}>
+                                Back To feed
+                            </Link>) : 
+                            (<Link to="/profiles" className="btn btn-light mb-3 float-left">
                                 Back To Profiles
-                            </Link>
+                            </Link>)}
+                            
                         </div>
                         <div className="col-md-6"></div>
                     </div>
@@ -65,11 +76,14 @@ class Profile extends Component {
 
 Profile.propTypes = {
     getProfileByHandle: PropTypes.func.isRequired,
-    profile: PropTypes.object.isRequired
+    profile: PropTypes.object.isRequired,
+    postRevert: PropTypes.func.isRequired,
+    post: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    profile: state.profile
+    profile: state.profile,
+    post: state.post
 });
 
-export default connect(mapStateToProps,{getProfileByHandle})(Profile);
+export default connect(mapStateToProps,{getProfileByHandle, postRevert})(Profile);

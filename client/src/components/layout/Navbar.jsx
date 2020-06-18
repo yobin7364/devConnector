@@ -4,13 +4,20 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {logoutUser} from '../../actions/authAction';
 import {clearCurrentProfile} from '../../actions/profileAction';
+import {postRevert} from '../../actions/postAction';
 
 class Navbar extends Component {
     onLogoutClick(e){
         e.preventDefault();
+        this.props.postRevert();
         this.props.logoutUser();
         this.props.clearCurrentProfile();
     }
+
+    revertFromPost(){
+        this.props.postRevert();
+    }
+
 
     render() {
         const {isAuthenticated, user} = this.props.auth;
@@ -18,10 +25,10 @@ class Navbar extends Component {
         const authLink = (
         <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-                    <Link className="nav-link" to="/feed">Post Feed</Link>
+                    <Link className="nav-link" to="/feed" onClick={this.revertFromPost.bind(this)}>Post Feed</Link>
             </li>
             <li className="nav-item">
-                    <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                    <Link className="nav-link" to="/dashboard" onClick={this.revertFromPost.bind(this)}>Dashboard</Link>
             </li>
             <li className="nav-item">
                 {/* link tag is used for react router and only a component is reloaded else whole page is reloaded*/}
@@ -66,7 +73,7 @@ class Navbar extends Component {
                         <div className="collapse navbar-collapse" id="mobile-nav">
                             <ul className="navbar-nav mr-auto">
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/profiles"> Developers
+                                    <Link className="nav-link" to="/profiles" onClick={this.revertFromPost.bind(this)}> Developers
                                     </Link>
                                 </li>
                             </ul>
@@ -82,11 +89,13 @@ class Navbar extends Component {
 
 Navbar.protoTypes = {
     logoutUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    postRevert: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    post: state.post
 });
 
-export default connect(mapStateToProps,{logoutUser,clearCurrentProfile})(Navbar);
+export default connect(mapStateToProps,{logoutUser,clearCurrentProfile, postRevert})(Navbar);

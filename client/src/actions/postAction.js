@@ -7,8 +7,10 @@ import {
     POST_LOADING,
     DELETE_POST,
     GET_POST,
-    CLEAR_ERRORS
-} from './types'; 
+    CLEAR_ERRORS,
+    FROM_POST,
+    REVERT_POST
+    } from './types'; 
 
 //add post 
 export const addPost = postData => dispatch => {
@@ -161,5 +163,19 @@ export const setPostLoading = () => {
 export const clearErrors = () => {
     return {
         type: CLEAR_ERRORS
+    }
+}
+
+//add backtoPost button from profile
+export const postBack = () => {
+    return {
+        type: FROM_POST
+    }
+}
+
+//remove backtoPost button from profile
+export const postRevert = () => {
+    return {
+        type: REVERT_POST
     }
 }

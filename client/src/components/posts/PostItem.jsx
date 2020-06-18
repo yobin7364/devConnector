@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
-import {deletePost, addLike, removeLike} from '../../actions/postAction';
+import {deletePost, addLike, removeLike, postBack} from '../../actions/postAction';
+import {getProfiles} from '../../actions/profileAction';
 
 class PostItem extends Component {
     onDeleteClick(id){
@@ -27,17 +28,37 @@ class PostItem extends Component {
         }
     }
 
+    componentDidMount(){
+      this.props.getProfiles();
+    }
+
+    postLinkBack(){
+      this.props.postBack();
+    }
+
     render() {
         const {post, auth, showActions} = this.props;
+        const {profiles} = this.props.profile;
+
+        let handlePost,handleLocal;
+
+        if(profiles){
+           handlePost = profiles.filter(profile => profile.user._id === post.user);
+          if(handlePost){
+              handleLocal = handlePost[0].handle;
+          }
+        }
+
 
         return (
+           
             <div className="card card-body mb-3">
               <div className="row">
                 <div className="col-md-2">
-                  <a href="profile.html">
+                  <Link to={`/profile/${handleLocal}`} onClick={this.postLinkBack.bind(this)}>
                     <img className="rounded-circle d-none d-md-block" src={post.avatar}
                       alt="" />
-                  </a>
+                  </Link>
                   <br />
                   <p className="text-center">{post.name}</p>
                 </div>
@@ -76,11 +97,15 @@ PostItem.propTypes = {
     auth: PropTypes.object.isRequired,
     deletePost: PropTypes.func.isRequired,
     addLike: PropTypes.func.isRequired,
-    removeLike: PropTypes.func.isRequired
+    removeLike: PropTypes.func.isRequired,
+    getProfiles: PropTypes.func.isRequired,
+    profile: PropTypes.object.isRequired,
+    postBack: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    profile: state.profile
 })
 
-export default connect(mapStateToProps,{deletePost, addLike, removeLike})(PostItem);
+export default connect(mapStateToProps,{deletePost, addLike, removeLike, getProfiles, postBack})(PostItem);
