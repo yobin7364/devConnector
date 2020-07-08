@@ -5,7 +5,9 @@ import {GET_PROFILE,
         CLEAR_CURRENT_PROFILE,
         GET_ERRORS, 
         SET_CURRENT_USER, 
-        GET_PROFILES
+        GET_PROFILES,
+        GET_EXPERIENCE_ID,
+        REMOVE_EXPERIENCE_ID
         } from './types';
 
 //get current profile
@@ -104,6 +106,21 @@ export const deleteExperience = (id) => dispatch => {
             );
 }
 
+
+//Update Experience
+export const updateExperience = (id, updateExpData, history) => dispatch => {
+    axios
+        .put(`/api/profile/experience/${id}`, updateExpData)
+        .then(res => history.push('/dashboard'))
+        .catch(err => 
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+            );
+}
+
+
 //Delete education
 export const deleteEducation = (id) => dispatch => {
     axios
@@ -177,4 +194,19 @@ export const clearCurrentProfile = () => {
         type: CLEAR_CURRENT_PROFILE
     };
 };
+
+//get experience id
+export const getExperienceId = (id) => {
+    return {
+        type: GET_EXPERIENCE_ID,
+        payload: id
+    };
+};
+
+//remove experience id
+export const removeExperienceId = () => {
+    return {
+        type: REMOVE_EXPERIENCE_ID
+    }
+}
 

@@ -13,3 +13,5 @@ export const DELETE_POST = 'DELETE_POST';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const FROM_POST = 'FROM_POST';
 export const REVERT_POST = 'REVERT_POST';
+export const GET_EXPERIENCE_ID = "GET_EXPERIENCE_ID";
+export const REMOVE_EXPERIENCE_ID = "REMOVE_EXPERIENCE_ID";
