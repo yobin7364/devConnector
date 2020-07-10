@@ -275,13 +275,14 @@ router.put('/experience/:exp_id', passport.authenticate('jwt', {session:false}),
     if(req.body.company) experienceField.company = req.body.company;
     if(req.body.location) experienceField.location = req.body.location;
     if(req.body.from) experienceField.from = req.body.from;
-    if(req.body.to) experienceField.to = req.body.to;
+    req.body.to ? (experienceField.to = req.body.to) : (experienceField.to = '');
     if(req.body.description) experienceField.description = req.body.description;
+    if(req.body.current) experienceField.current = req.body.current;
 
     Profile.findOne({user: req.user.id})
             .then(profile => 
                 {
-                    profile.experience.map((item,index) => {
+                    profile.experience.map((item) => {
                     if (item.id === req.params.exp_id){
                         //spread operator causes problem for 'item' object 
                         item = Object.assign(item, experienceField);

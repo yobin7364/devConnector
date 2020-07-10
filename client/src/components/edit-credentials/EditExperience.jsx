@@ -37,8 +37,6 @@ class EditExperience extends Component {
 
           profile.experience.map(item => {
           if (item._id === experienceId) {
-            let dateFill;
-            dateFill = (item.from).slice(0,10);
 
             this.setState({
               company: item.company ? item.company : '',
@@ -47,7 +45,8 @@ class EditExperience extends Component {
               from: item.from ? (item.from).slice(0,10):"",
               to: item.to ? (item.to).slice(0,10):"",
               current: item.current,
-              description: item.description ? item.description : ''
+              description: item.description ? item.description : '',
+              disabled: item.to ? false : true
             });
 
         }
@@ -63,6 +62,7 @@ class EditExperience extends Component {
 
     onSubmit(e){
         e.preventDefault();
+        let {experienceId} = this.props.profile;
 
         const expData = {
             company: this.state.company,
@@ -74,7 +74,7 @@ class EditExperience extends Component {
             description: this.state.description
         };
 
-        this.props.updateExperience(this.props.profile.profile.experienceId ,expData, this.props.history);
+        this.props.updateExperience( experienceId ,expData, this.props.history);
     }
 
     onChange(e){
