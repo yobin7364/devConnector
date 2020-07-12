@@ -35,7 +35,7 @@ class AddEducation extends Component {
       if (this.props.profile.profile){
         const {profile, educationId} = this.props.profile;
 
-          profile.education.map(item => {
+          profile.education.forEach(item => {
           if (item._id === educationId) {
 
             this.setState({

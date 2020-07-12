@@ -36,7 +36,7 @@ class AddExperience extends Component {
       if (this.props.profile.profile){
         const {profile, experienceId} = this.props.profile;
 
-          profile.experience.map(item => {
+          profile.experience.forEach(item => {
           if (item._id === experienceId) {
 
             this.setState({
