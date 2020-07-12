@@ -273,7 +273,7 @@ router.put('/experience/:exp_id', passport.authenticate('jwt', {session:false}),
     if(req.body.from) experienceField.from = req.body.from;
     req.body.to ? (experienceField.to = req.body.to) : (experienceField.to = '');
     if(req.body.description) experienceField.description = req.body.description;
-    if(req.body.current) experienceField.current = req.body.current;
+    req.body.to ? (experienceField.current = false) : (experienceField.current = true);
 
     Profile.findOne({user: req.user.id})
             .then(profile => 
@@ -282,6 +282,37 @@ router.put('/experience/:exp_id', passport.authenticate('jwt', {session:false}),
                     if (item.id === req.params.exp_id){
                         //spread operator causes problem for 'item' object 
                         item = Object.assign(item, experienceField);
+                    }
+                })
+                profile.save().then(profile => res.json(profile));
+                }
+
+                ).catch(err => res.status(404).json(err));
+
+});
+
+//@route  Update /api/profile/education/:edu_id
+//@desc   Update education from profile
+//@access Private
+router.put('/education/:edu_id', passport.authenticate('jwt', {session:false}), (req,res) => {
+
+    const educationField = {};
+
+    if(req.body.school) educationField.school = req.body.school;
+    if(req.body.degree) educationField.degree = req.body.degree;
+    if(req.body.fieldofstudy) educationField.fieldofstudy = req.body.fieldofstudy;
+    if(req.body.from) educationField.from = req.body.from;
+    req.body.to ? (educationField.to = req.body.to) : (educationField.to = '');
+    if(req.body.description) educationField.description = req.body.description;
+    req.body.to ? (educationField.current = false) : (educationField.current = true);
+
+    Profile.findOne({user: req.user.id})
+            .then(profile => 
+                {
+                    profile.education.map((item) => {
+                    if (item.id === req.params.edu_id){
+                        //spread operator causes problem for 'item' object 
+                        item = Object.assign(item, educationField);
                     }
                 })
                 profile.save().then(profile => res.json(profile));

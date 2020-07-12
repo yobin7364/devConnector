@@ -4,7 +4,7 @@ import TextFieldGroup from '../common/TextFieldGroup';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { addEducation } from '../../actions/profileAction';
+import { addEducation, updateEducation, getCurrentProfile, removeEducationId} from '../../actions/profileAction';
 
 class AddEducation extends Component {
     constructor(props){
@@ -18,12 +18,42 @@ class AddEducation extends Component {
             current: false,
             description: '',
             errors: {},
-            disabled: false
+            disabled: false,
+            title:'Add'
         }
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onCheck = this.onCheck.bind(this);
+    }
+
+    componentDidMount(){
+      //call this action whenever you want to fetch store state
+      this.props.getCurrentProfile();
+
+      //wait until data is fetched
+      if (this.props.profile.profile){
+        const {profile, educationId} = this.props.profile;
+
+          profile.education.map(item => {
+          if (item._id === educationId) {
+
+            this.setState({
+              school: item.school ? item.school : '',
+              degree: item.degree ? item.degree : '',
+              fieldofstudy: item.fieldofstudy ? item.fieldofstudy : '',
+              from: item.from ? (item.from).slice(0,10):"",
+              to: item.to ? (item.to).slice(0,10):"",
+              current: item.current,
+              description: item.description ? item.description : '',
+              disabled: item.to ? false : true,
+              title:"Edit"
+            });
+
+        }
+      });
+      }
+      
     }
 
     componentWillReceiveProps(nextProps){
@@ -32,8 +62,13 @@ class AddEducation extends Component {
         }
     }
 
+    componentWillUnmount(){
+      this.props.removeEducationId();
+    }
+
     onSubmit(e){
         e.preventDefault();
+        let {educationId} = this.props.profile;
 
         const eduData = {
             school: this.state.school,
@@ -45,7 +80,13 @@ class AddEducation extends Component {
             description: this.state.description
         };
 
+        if(educationId){
+          this.props.updateEducation(educationId , eduData , this.props.history);
+        }
+
+        else{
         this.props.addEducation(eduData, this.props.history);
+        }
     }
 
     onChange(e){
@@ -71,7 +112,7 @@ class AddEducation extends Component {
                   <Link to="/dashboard" className="btn btn-light">
                     Go Back
                   </Link>
-                  <h1 className="display-4 text-center">Add Your Education</h1>
+                  <h1 className="display-4 text-center">{this.state.title} Your Education</h1>
                   <p className="lead text-center">Add any school, bootcamp, etc that you have attended</p>
                   <small className="d-block pb-3">* = required field</small>
                   <form onSubmit={this.onSubmit}>
@@ -157,7 +198,17 @@ class AddEducation extends Component {
 AddEducation.propTypes = {
     profile: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
-    addExperience: PropTypes.func.isRequired
+    addEducation: PropTypes.func.isRequired,
+    updateEducation: PropTypes.func.isRequired,
+    getCurrentProfile: PropTypes.func.isRequired,
+    removeEducationId: PropTypes.func.isRequired
+}
+
+const mapDispatchToPros = {
+  updateEducation, 
+  getCurrentProfile, 
+  removeEducationId,
+  addEducation
 }
 
 const mapStateToProps = state => ({
@@ -165,4 +216,4 @@ const mapStateToProps = state => ({
     errors: state.errors
 });
 
-export default connect(mapStateToProps, {addEducation})(withRouter(AddEducation));
+export default connect(mapStateToProps, mapDispatchToPros)(withRouter(AddEducation));

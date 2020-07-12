@@ -1,10 +1,20 @@
-import {GET_PROFILE, GET_PROFILES, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_EXPERIENCE_ID, REMOVE_EXPERIENCE_ID} from '../actions/types'; 
+import {
+    GET_PROFILE, 
+    GET_PROFILES, 
+    PROFILE_LOADING, 
+    CLEAR_CURRENT_PROFILE, 
+    GET_EXPERIENCE_ID, 
+    REMOVE_EXPERIENCE_ID,
+    GET_EDUCATION_ID,
+    REMOVE_EDUCATION_ID
+} from '../actions/types'; 
 
 const initialState = {
     //null is used to indicate empty object 
     profile: null,
     profiles: null,
     experienceId: '',
+    educationId:'',
     loading: false
 };
 
@@ -41,6 +51,16 @@ export default function(state = initialState, action){
             return {
                 ...state,
                 experienceId: ''
+            }
+        case GET_EDUCATION_ID:
+            return {
+                ...state,
+                educationId: action.payload
+            }
+        case REMOVE_EDUCATION_ID:
+            return {
+                ...state,
+                educationId: ''
             }
         default:
             return state;

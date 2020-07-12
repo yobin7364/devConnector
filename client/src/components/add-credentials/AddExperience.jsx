@@ -19,7 +19,7 @@ class AddExperience extends Component {
             description: '',
             errors: {},
             disabled: false,
-            title:'Add'
+            staticTitle:'Add'
         }
 
         this.onChange = this.onChange.bind(this);
@@ -48,7 +48,7 @@ class AddExperience extends Component {
               current: item.current,
               description: item.description ? item.description : '',
               disabled: item.to ? false : true,
-              title:"Edit"
+              staticTitle:"Edit"
             });
 
         }
@@ -113,7 +113,7 @@ class AddExperience extends Component {
                   <Link to="/dashboard" className="btn btn-light">
                     Go Back
                   </Link>
-                  <h1 className="display-4 text-center">{this.state.title} Your Experience</h1>
+                  <h1 className="display-4 text-center">{this.state.staticTitle} Your Experience</h1>
                   <p className="lead text-center">Add any developer/programming positions that you have had in the past</p>
                   <small className="d-block pb-3">* = required field</small>
                   <form onSubmit={this.onSubmit}>

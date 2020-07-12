@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-import {deleteEducation} from '../../actions/profileAction';
+import {deleteEducation, getEducationId} from '../../actions/profileAction';
+import {Link} from 'react-router-dom';
 
 class Education extends Component {
     onDeleteClick(id){
         this.props.deleteEducation(id);
+    }
+
+    onEditClick(id){
+        this.props.getEducationId(id);
     }
 
     render() {
@@ -17,6 +22,7 @@ class Education extends Component {
                 <td><Moment format="YYYY/MM/DD">{edu.from}</Moment> - &nbsp;
                     {edu.to === null ? ('Now') : <Moment format="YYYY/MM/DD">{edu.to}</Moment>}
                 </td>
+                <td><Link to='/add-education' onClick={() => this.onEditClick(edu._id)} className="btn btn-primary">Edit</Link></td>
                 <td><button onClick={this.onDeleteClick.bind(this, edu._id)} className="btn btn-danger">Delete</button></td>
             </tr>
         ))
@@ -42,7 +48,8 @@ class Education extends Component {
 }
 
 Education.propTypes = {
-    deleteEducation: PropTypes.func.isRequired
+    deleteEducation: PropTypes.func.isRequired,
+    getEducationId: PropTypes.func.isRequired
 }
 
-export default connect(null,{deleteEducation})(Education);
+export default connect(null,{deleteEducation,getEducationId})(Education);

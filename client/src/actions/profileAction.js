@@ -7,7 +7,9 @@ import {GET_PROFILE,
         SET_CURRENT_USER, 
         GET_PROFILES,
         GET_EXPERIENCE_ID,
-        REMOVE_EXPERIENCE_ID
+        REMOVE_EXPERIENCE_ID,
+        GET_EDUCATION_ID,
+        REMOVE_EDUCATION_ID
         } from './types';
 
 //get current profile
@@ -120,6 +122,19 @@ export const updateExperience = (id, updateExpData, history) => dispatch => {
             );
 }
 
+//Update Education
+export const updateEducation = (id, updateEduData, history) => dispatch => {
+    axios
+        .put(`/api/profile/education/${id}`, updateEduData)
+        .then(res => history.push('/dashboard'))
+        .catch(err => 
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+            );
+}
+
 
 //Delete education
 export const deleteEducation = (id) => dispatch => {
@@ -207,6 +222,21 @@ export const getExperienceId = (id) => {
 export const removeExperienceId = () => {
     return {
         type: REMOVE_EXPERIENCE_ID
+    }
+}
+
+//get education id
+export const getEducationId = (id) => {
+    return {
+        type: GET_EDUCATION_ID,
+        payload: id
+    };
+};
+
+//remove education id
+export const removeEducationId = () => {
+    return {
+        type: REMOVE_EDUCATION_ID
     }
 }
 
