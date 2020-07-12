@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import PostForm from './PostForm';
 import PostFeed from './PostFeed';
 import Spinner from '../common/Spinner';
-import { GET_POSTS } from '../../actions/types';
 import {getPosts} from '../../actions/postAction';
 
 class Posts extends Component {

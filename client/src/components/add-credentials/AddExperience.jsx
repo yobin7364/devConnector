@@ -4,7 +4,7 @@ import TextFieldGroup from '../common/TextFieldGroup';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { addExperience } from '../../actions/profileAction';
+import {addExperience, updateExperience, getCurrentProfile, removeExperienceId} from '../../actions/profileAction';
 
 class AddExperience extends Component {
     constructor(props){
@@ -18,12 +18,43 @@ class AddExperience extends Component {
             current: false,
             description: '',
             errors: {},
-            disabled: false
+            disabled: false,
+            title:'Add'
         }
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onCheck = this.onCheck.bind(this);
+    }
+
+
+    componentDidMount(){
+      //call this action whenever you want to fetch store state
+      this.props.getCurrentProfile();
+
+      //wait until data is fetched
+      if (this.props.profile.profile){
+        const {profile, experienceId} = this.props.profile;
+
+          profile.experience.map(item => {
+          if (item._id === experienceId) {
+
+            this.setState({
+              company: item.company ? item.company : '',
+              title: item.title ? item.title : '',
+              location: item.location ? item.location : '',
+              from: item.from ? (item.from).slice(0,10):"",
+              to: item.to ? (item.to).slice(0,10):"",
+              current: item.current,
+              description: item.description ? item.description : '',
+              disabled: item.to ? false : true,
+              title:"Edit"
+            });
+
+        }
+      });
+      }
+      
     }
 
     componentWillReceiveProps(nextProps){
@@ -32,8 +63,13 @@ class AddExperience extends Component {
         }
     }
 
+    componentWillUnmount(){
+      this.props.removeExperienceId();
+    }
+
     onSubmit(e){
         e.preventDefault();
+        let {experienceId} = this.props.profile;
 
         const expData = {
             company: this.state.company,
@@ -45,7 +81,13 @@ class AddExperience extends Component {
             description: this.state.description
         };
 
+        if (experienceId){
+          this.props.updateExperience( experienceId ,expData, this.props.history);
+        }
+
+        else{
         this.props.addExperience(expData, this.props.history);
+        }
     }
 
     onChange(e){
@@ -71,7 +113,7 @@ class AddExperience extends Component {
                   <Link to="/dashboard" className="btn btn-light">
                     Go Back
                   </Link>
-                  <h1 className="display-4 text-center">Add Your Experience</h1>
+                  <h1 className="display-4 text-center">{this.state.title} Your Experience</h1>
                   <p className="lead text-center">Add any developer/programming positions that you have had in the past</p>
                   <small className="d-block pb-3">* = required field</small>
                   <form onSubmit={this.onSubmit}>
@@ -157,7 +199,17 @@ class AddExperience extends Component {
 AddExperience.propTypes = {
     profile: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
-    addExperience: PropTypes.func.isRequired
+    addExperience: PropTypes.func.isRequired,
+    updateExperience: PropTypes.func.isRequired,
+    getCurrentProfile: PropTypes.func.isRequired,
+    removeExperienceId: PropTypes.func.isRequired
+}
+
+const mapDispatchToPros = {
+  updateExperience, 
+  getCurrentProfile, 
+  removeExperienceId,
+  addExperience
 }
 
 const mapStateToProps = state => ({
@@ -165,4 +217,4 @@ const mapStateToProps = state => ({
     errors: state.errors
 });
 
-export default connect(mapStateToProps, {addExperience})(withRouter(AddExperience));
+export default connect(mapStateToProps, mapDispatchToPros)(withRouter(AddExperience));
