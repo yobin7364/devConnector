@@ -7,6 +7,20 @@ import ProfileItem from './ProfileItem';
 
 
 class Profiles extends Component {
+
+    constructor(){
+        super();
+    
+        this.state = {
+          search:null
+        };
+      }
+
+    searchSpace = (event) => {
+    let keyword = event.target.value;
+    this.setState({search:keyword})
+    }
+
     //this will remove the spinner 
     componentDidMount(){
         this.props.getProfiles();
@@ -22,9 +36,24 @@ class Profiles extends Component {
         else{
             if(profiles.length > 0){
                 //here we are making multiple components 'ProfileItem'
-                profileItems = profiles.map(profile => (
-                    <ProfileItem key={profile._id} profile={profile} />
-                ))
+                // profileItems = profiles.map(profile => (
+                //     <ProfileItem key={profile._id} profile={profile} />
+
+                profileItems = profiles.filter((data) => {
+
+                    if(this.state.search == null){
+                        return data;
+                    }
+
+                    if(data.user.name.toLowerCase().includes(this.state.search.toLowerCase())){
+                        return data;
+                    }
+                }).map( profile => 
+                    (
+                        <ProfileItem key={profile._id} profile={profile} />
+                    )
+                )
+                
             }
             else{
                 profileItems = <h4>No profiles found...</h4>
@@ -40,6 +69,9 @@ class Profiles extends Component {
                             <p className="lead text-center">
                                 Browse and connect with developers
                             </p>
+                            <div className="d-flex justify-content-center m-3">
+                            <input type="text" className="form-control w-50" placeholder="Search Profile" onChange={(e)=>this.searchSpace(e)} />
+                            </div>
                             {profileItems}
                         </div>
                     </div>
