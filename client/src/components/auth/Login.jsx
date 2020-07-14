@@ -25,14 +25,19 @@ class Login extends Component {
     }
 
     //caled when this component receives new props from parent
-    componentWillReceiveProps(nextProps){
+    componentDidUpdate(prevProps){
+      //compare with previous props to avoid infinite loop in setState
+      if(prevProps.auth.isAuthenticated !== this.props.auth.isAuthenticated)
       //redirected to dashboard when 'isAuthenticated' is true
-      if(nextProps.auth.isAuthenticated){
-        this.props.history.push('/dashboard');
+      {
+          this.props.history.push('/dashboard');
+        
       }
 
-      if(nextProps.errors) {
-        this.setState({errors: nextProps.errors});
+      if(prevProps.errors !== this.props.errors)
+      {
+          this.setState({errors: this.props.errors});
+        
       }
     }
 

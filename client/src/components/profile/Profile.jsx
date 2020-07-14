@@ -22,11 +22,11 @@ class Profile extends Component {
         
     }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.profile.profile === null && this.props.profile.loading){
-            this.props.history.push('/not-found');
-        }
-    }
+    // componentWillReceiveProps(nextProps){
+    //     if(nextProps.profile.profile === null && this.props.profile.loading){
+    //         this.props.history.push('/not-found');
+    //     }
+    // }
 
     feedRevertBack(){
         this.props.postRevert();

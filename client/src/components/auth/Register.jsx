@@ -26,11 +26,13 @@ class Register extends Component {
       }
 
     //this props is from redux i.e 'mapStateToProps'
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.errors) {
-            this.setState({errors: nextProps.errors});
+    componentDidUpdate(prevProps){
+        if(prevProps.errors !== this.props.errors)
+        {
+            this.setState({errors: this.props.errors});
+          
         }
-    }
+      }
 
     onChange(e) {
         //this [e.target.name] helps to make change to respective state object on change
@@ -70,7 +72,7 @@ class Register extends Component {
                             type="text"
                             value={this.state.name}
                             onChange={this.onChange}
-                            //this is filled from 'componentWillReceiveProps()'
+                            //this is filled from 'componentDidUpdate()'
                             error={errors.name}
                         />
 

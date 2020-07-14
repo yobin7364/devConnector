@@ -16,10 +16,12 @@ class CommentForm extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    componentWillReceiveProps(newProps){
-        if(newProps.errors){
-            this.setState({errors: newProps.errors});
-        }
+    componentDidUpdate(prevProps){
+      if(prevProps.errors !== this.props.errors)
+      {
+          this.setState({errors: this.props.errors});
+        
+      }
     }
 
     onSubmit(e){

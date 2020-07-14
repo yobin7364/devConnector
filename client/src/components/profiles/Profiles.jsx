@@ -46,6 +46,7 @@ class Profiles extends Component {
         const {profiles, loading} = this.props.profile;
         let profileItems;
         var classname,pageCount;
+        classname = "d-none";
 
         if(profiles === null || loading) {
             profileItems = <Spinner/>
@@ -56,7 +57,6 @@ class Profiles extends Component {
                 //here we are making multiple components 'ProfileItem'
                 
                 if(this.state.search){
-                    classname = "d-none";
                     profileItems = profiles.filter((data) => {
 
                         if(data.user.name.toLowerCase().includes(this.state.search.toLowerCase())){

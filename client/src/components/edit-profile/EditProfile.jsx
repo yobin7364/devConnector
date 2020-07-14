@@ -33,19 +33,22 @@ class CreateProfile extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
-    //'getCurrentProfile()' updates the state and fills the input fields by componentWillReceiveProps() 
+    //'getCurrentProfile()' updates the state and fills the input fields by componentDidUpdate() 
     componentDidMount(){
         this.props.getCurrentProfile();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.errors){
-            this.setState({errors: nextProps.errors});
+    componentDidUpdate(prevProps) {
+        if(prevProps.errors !== this.props.errors)
+        {
+            this.setState({errors: this.props.errors});
+          
         }
 
         //profile.profile is the state object and contains profile data
-        if(nextProps.profile.profile) {
-            const profile = nextProps.profile.profile;
+        if(prevProps.profile.profile !== this.props.profile.profile)
+        {
+            const profile = this.props.profile.profile;
 
             //bring skills array back to CSV
             const skillsCSV = profile.skills.join(',');
