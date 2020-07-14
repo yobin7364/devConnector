@@ -5,7 +5,6 @@ import Spinner from '../common/Spinner';
 import {getProfiles} from '../../actions/profileAction';
 import ProfileItem from './ProfileItem';
 import ReactPaginate from 'react-paginate';
-import './style.css';
 
 class Profiles extends Component {
 
@@ -14,9 +13,8 @@ class Profiles extends Component {
     
         this.state = {
           search: null,
-          data: [],
           offset: 0,
-          perPage: 1,
+          perPage: 10,
           currentPage: 0
         };
 
@@ -47,7 +45,7 @@ class Profiles extends Component {
     render() {
         const {profiles, loading} = this.props.profile;
         let profileItems;
-        var pagination,pageCount;
+        var classname,pageCount;
 
         if(profiles === null || loading) {
             profileItems = <Spinner/>
@@ -58,6 +56,7 @@ class Profiles extends Component {
                 //here we are making multiple components 'ProfileItem'
                 
                 if(this.state.search){
+                    classname = "d-none";
                     profileItems = profiles.filter((data) => {
 
                         if(data.user.name.toLowerCase().includes(this.state.search.toLowerCase())){
@@ -72,7 +71,7 @@ class Profiles extends Component {
                 }      
                 
                 else{
-                    
+                    classname = "d-flex justify-content-center";
                     const slice = profiles.slice(this.state.offset, this.state.offset + this.state.perPage);
                     profileItems = slice.map(profile => (
                         <ProfileItem key={profile._id} profile={profile} />
@@ -80,24 +79,7 @@ class Profiles extends Component {
 
                     pageCount = Math.ceil(profiles.length / this.state.perPage);
 
-                    pagination = (
-                        <ReactPaginate
-                                previousLabel={"prev"}
-                                nextLabel={"next"}
-                                breakLabel={"..."}
-                                breakClassName={"break-me"}
-                                pageCount={pageCount}
-                                marginPagesDisplayed={2}
-                                pageRangeDisplayed={5}
-                                onPageChange={this.handlePageClick}
-                                containerClassName={"pagination"}
-                                subContainerClassName={"pages pagination"}
-                                activeClassName={"active"}
-                            />
-                    );
-
                 }
-  
                 
             }
             else{
@@ -119,8 +101,20 @@ class Profiles extends Component {
                             <input type="text" className="form-control w-50" placeholder="Search Profile" onChange={(e)=>this.searchSpace(e)} />
                             </div>
                             {profileItems}
-                            <div className="d-flex justify-content-center">
-                            {pagination}
+                            <div className={classname}>
+                            <ReactPaginate
+                                previousLabel={"prev"}
+                                nextLabel={"next"}
+                                breakLabel={"..."}
+                                breakClassName={"break-me"}
+                                pageCount={pageCount}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={this.handlePageClick}
+                                containerClassName={"pagination"}
+                                subContainerClassName={"pages pagination"}
+                                activeClassName={"active"}
+                            />
                             </div>
                         </div>
                     </div>
