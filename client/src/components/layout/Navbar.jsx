@@ -62,7 +62,7 @@ class Navbar extends Component {
 
 
         return (
-            <div style={{ minWidth:"575px"}}>
+            <div>
                 <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
                     <div className="container">
                         <Link className="navbar-brand" to="/">DevConnector</Link>
