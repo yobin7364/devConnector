@@ -29,20 +29,22 @@ class Education extends Component {
         return (
             <div>
                 <h4 className="mb-2">Education Credentials</h4>
-                <table className="table">
-                    <thead>
-                        <tr>
-                        <th>School</th>
-                        <th>Degree</th>
-                        <th>Years</th>
-                        <th />
-                        <th />
-                        </tr>
-                    </thead>
-                <tbody>
-                    {education}
-                </tbody>
-                </table>
+                <div className="table-responsive">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                            <th>School</th>
+                            <th>Degree</th>
+                            <th>Years</th>
+                            <th />
+                            <th />
+                            </tr>
+                        </thead>
+                    <tbody>
+                        {education}
+                    </tbody>
+                    </table>
+                </div>
             </div>
         )
     }
